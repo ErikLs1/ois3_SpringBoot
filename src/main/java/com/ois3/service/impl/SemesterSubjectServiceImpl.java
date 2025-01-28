@@ -88,6 +88,6 @@ public class SemesterSubjectServiceImpl implements SemesterSubjectService {
     public void deleteSemesterSubject(Integer id) {
         SemesterSubject semesterSubject = semesterSubjectRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("SemesterSubject not found with id: " + id));
-        semesterSubjectRepository.delete(semesterSubject);
+        semesterSubjectRepository.deleteById(id);
     }
 }

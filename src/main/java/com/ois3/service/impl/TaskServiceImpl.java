@@ -56,6 +56,6 @@ public class TaskServiceImpl implements TaskService {
     public void deleteTask(Integer id) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Task not found with id: " + id));
-        taskRepository.delete(task);
+        taskRepository.deleteById(id);
     }
 }

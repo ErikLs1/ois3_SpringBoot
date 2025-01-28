@@ -67,6 +67,6 @@ public class TeacherServiceImpl implements TeacherService {
     public void deleteTeacher(Integer id) {
         Teacher teacher = teacherRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Teacher not found with id: " + id));
-        teacherRepository.delete(teacher);
+        teacherRepository.deleteById(id);
     }
 }

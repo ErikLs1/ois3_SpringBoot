@@ -58,6 +58,6 @@ public class SubjectServiceImpl implements SubjectService {
     public void deleteSubject(Integer id) {
         Subject subject = subjectRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Subject not found with id: " + id));
-        subjectRepository.delete(subject);
+        subjectRepository.deleteById(id);
     }
 }

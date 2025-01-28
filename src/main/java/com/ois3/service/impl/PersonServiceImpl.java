@@ -62,6 +62,6 @@ public class PersonServiceImpl implements PersonService {
     public void deletePerson(Integer id) {
         Person person = personRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Person not found with id: " + id));
-        personRepository.delete(person);
+        personRepository.deleteById(id);
     }
 }

@@ -80,6 +80,6 @@ public class UserAccountServiceImpl implements UserAccountService {
     public void deleteUserAccount(Integer id) {
         UserAccount userAccount = userAccountRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("UserAccount not found with id: " + id));
-        userAccountRepository.delete(userAccount);
+        userAccountRepository.deleteById(id);
     }
 }

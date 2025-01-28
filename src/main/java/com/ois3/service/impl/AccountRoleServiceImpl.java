@@ -55,6 +55,6 @@ public class AccountRoleServiceImpl implements AccountRoleService {
     public void deleteAccountRole(Integer id) {
         AccountRole accountRole = accountRoleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("AccountRole not found with id: " + id));
-        accountRoleRepository.delete(accountRole);
+        accountRoleRepository.deleteById(id);
     }
 }

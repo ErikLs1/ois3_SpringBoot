@@ -79,6 +79,6 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     public void deleteEnrollment(Integer id) {
         Enrollment enrollment = enrollmentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Enrollment not found with id: " + id));
-        enrollmentRepository.delete(enrollment);
+        enrollmentRepository.deleteById(id);
     }
 }

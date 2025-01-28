@@ -86,6 +86,6 @@ public class TaskGradeServiceImpl implements TaskGradeService {
     public void deleteTaskGrade(Integer id) {
         TaskGrade taskGrade = taskGradeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("TaskGrade not found with id: " + id));
-        taskGradeRepository.delete(taskGrade);
+        taskGradeRepository.deleteById(id);
     }
 }

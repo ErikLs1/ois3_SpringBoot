@@ -56,6 +56,6 @@ public class SemesterServiceImpl implements SemesterService {
     public void deleteSemester(Integer id) {
         Semester semester = semesterRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Semester not found with id: " + id));
-        semesterRepository.delete(semester);
+        semesterRepository.deleteById(id);
     }
 }
