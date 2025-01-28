@@ -21,7 +21,6 @@ public class Enrollment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer enrollmentId;
 
-
     @ManyToOne
     @JoinColumn(name = "student_id", nullable = false)
     private Student student;
