@@ -24,7 +24,11 @@ public class UserAccountServiceImpl implements UserAccountService {
     private final PersonRepository personRepository;
     private final AccountRoleRepository accountRoleRepository;
 
-    private UserAccountDto getUserAccountDto(UserAccountDto dto, UserAccount userAccount) {
+
+    @Override
+    public UserAccountDto createUserAccount(UserAccountDto dto) {
+        UserAccount userAccount = userAccountMapper.toEntity(dto);
+
         if (dto.getPersonId() != null) {
             Person person = personRepository.findById(dto.getPersonId())
                     .orElseThrow(() -> new RuntimeException("Person not found with id: " + dto.getPersonId()));
@@ -32,21 +36,13 @@ public class UserAccountServiceImpl implements UserAccountService {
         }
 
         if (dto.getAccountRoleId() != null) {
-            AccountRole accountRole = accountRoleRepository.findById(dto.getAccountRoleId())
+            AccountRole role = accountRoleRepository.findById(dto.getAccountRoleId())
                     .orElseThrow(() -> new RuntimeException("AccountRole not found with id: " + dto.getAccountRoleId()));
-            userAccount.setAccountRole(accountRole);
+            userAccount.setAccountRole(role);
         }
 
-        UserAccount updated = userAccountRepository.save(userAccount);
-        return userAccountMapper.toDto(updated);
-    }
-
-
-    @Override
-    public UserAccountDto createUserAccount(UserAccountDto dto) {
-        UserAccount userAccount = userAccountMapper.toEntity(dto);
-
-        return getUserAccountDto(dto, userAccount);
+        UserAccount saved = userAccountRepository.save(userAccount);
+        return userAccountMapper.toDto(saved);
     }
 
     @Override
@@ -56,10 +52,23 @@ public class UserAccountServiceImpl implements UserAccountService {
 
         existing.setUsername(dto.getUsername());
         if (dto.getPassword() != null) {
+            // e.g., existing.setPassword(passwordEncoder.encode(dto.getPassword()));
             existing.setPassword(dto.getPassword());
         }
 
-        return getUserAccountDto(dto, existing);
+        if (dto.getPersonId() != null) {
+            Person person = personRepository.findById(dto.getPersonId())
+                    .orElseThrow(() -> new RuntimeException("Person not found with id: " + dto.getPersonId()));
+            existing.setPerson(person);
+        }
+        if (dto.getAccountRoleId() != null) {
+            AccountRole role = accountRoleRepository.findById(dto.getAccountRoleId())
+                    .orElseThrow(() -> new RuntimeException("AccountRole not found with id: " + dto.getAccountRoleId()));
+            existing.setAccountRole(role);
+        }
+
+        UserAccount updated = userAccountRepository.save(existing);
+        return userAccountMapper.toDto(updated);
     }
 
     @Override
