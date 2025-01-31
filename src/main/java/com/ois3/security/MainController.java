@@ -15,7 +15,6 @@ public class MainController {
         if (principal == null) {
             return null;
         }
-
         return principal.getName();
-    }
+     }
 }

@@ -43,35 +43,31 @@ public class SecurityController {
         this.jwtCore = jwtCore;
     }
 
-
     @PostMapping("/signup")
-    ResponseEntity<?> signup(@RequestBody SignupRequest signupRequest) {
-        if (userRepository.existsUserByUsername(signupRequest.getUsername())) {
+    public ResponseEntity<?> signup(@RequestBody SignUpRequest signUpRequest) {
+        if (userRepository.existsUserByUsername(signUpRequest.getUsername())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Choose different name");
         }
-
-        if (userRepository.existsUsersByEmail(signupRequest.getEmail())) {
+        if (userRepository.existsUserByEmail(signUpRequest.getEmail())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Choose different email");
         }
-
-        String hashed = passwordEncoder.encode(signupRequest.getPassword());
+        String hashed = passwordEncoder.encode(signUpRequest.getPassword());
         User user = new User();
-        user.setUsername(signupRequest.getUsername());
-        user.setEmail(signupRequest.getEmail());
+        user.setUsername(signUpRequest.getUsername());
+        user.setEmail(signUpRequest.getEmail());
         user.setPassword(hashed);
+        userRepository.save(user);
         return ResponseEntity.ok("Success, baby");
     }
 
     @PostMapping("/signin")
-    ResponseEntity<?> signin(@RequestBody SigninRequest signinRequest) {
+    public ResponseEntity<?> signin(@RequestBody SignInRequest signInRequest) {
         Authentication authentication = null;
-
         try {
-            authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signinRequest.getUsername(), signinRequest.getPassword()));
+            authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signInRequest.getUsername(), signInRequest.getPassword()));
         } catch (BadCredentialsException e) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtCore.generateToken(authentication);
         return ResponseEntity.ok(jwt);
