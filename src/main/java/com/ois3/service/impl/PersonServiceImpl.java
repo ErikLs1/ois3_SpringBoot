@@ -37,7 +37,6 @@ public class PersonServiceImpl implements PersonService {
         existing.setGender(dto.getGender());
         existing.setPhoneNumber(dto.getPhoneNumber());
         existing.setAddress(dto.getAddress());
-        existing.setEmail(dto.getEmail());
         existing.setDateOfBirth(dto.getDateOfBirth());
 
         Person updated = personRepository.save(existing);

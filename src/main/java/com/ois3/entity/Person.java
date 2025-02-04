@@ -39,9 +39,10 @@ public class Person {
     @Column(name = "address")
     private String address;
 
-    @Column(name = "email", unique = true)
-    private String email;
-
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
+
+    @OneToOne
+    @JoinColumn(name = "user_account_id")
+    private UserAccount userAccount;
 }

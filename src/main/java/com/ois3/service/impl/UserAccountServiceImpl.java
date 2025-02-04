@@ -1,11 +1,9 @@
 package com.ois3.service.impl;
 
 import com.ois3.dto.UserAccountDto;
-import com.ois3.entity.AccountRole;
 import com.ois3.entity.Person;
 import com.ois3.entity.UserAccount;
 import com.ois3.mapper.UserAccountMapper;
-import com.ois3.repository.AccountRoleRepository;
 import com.ois3.repository.PersonRepository;
 import com.ois3.repository.UserAccountRepository;
 import com.ois3.service.UserAccountService;
@@ -22,7 +20,6 @@ public class UserAccountServiceImpl implements UserAccountService {
     private final UserAccountRepository userAccountRepository;
     private final UserAccountMapper userAccountMapper;
     private final PersonRepository personRepository;
-    private final AccountRoleRepository accountRoleRepository;
 
 
     @Override
@@ -33,12 +30,6 @@ public class UserAccountServiceImpl implements UserAccountService {
             Person person = personRepository.findById(dto.getPersonId())
                     .orElseThrow(() -> new RuntimeException("Person not found with id: " + dto.getPersonId()));
             userAccount.setPerson(person);
-        }
-
-        if (dto.getAccountRoleId() != null) {
-            AccountRole role = accountRoleRepository.findById(dto.getAccountRoleId())
-                    .orElseThrow(() -> new RuntimeException("AccountRole not found with id: " + dto.getAccountRoleId()));
-            userAccount.setAccountRole(role);
         }
 
         UserAccount saved = userAccountRepository.save(userAccount);
@@ -60,11 +51,6 @@ public class UserAccountServiceImpl implements UserAccountService {
             Person person = personRepository.findById(dto.getPersonId())
                     .orElseThrow(() -> new RuntimeException("Person not found with id: " + dto.getPersonId()));
             existing.setPerson(person);
-        }
-        if (dto.getAccountRoleId() != null) {
-            AccountRole role = accountRoleRepository.findById(dto.getAccountRoleId())
-                    .orElseThrow(() -> new RuntimeException("AccountRole not found with id: " + dto.getAccountRoleId()));
-            existing.setAccountRole(role);
         }
 
         UserAccount updated = userAccountRepository.save(existing);

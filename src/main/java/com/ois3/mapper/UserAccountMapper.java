@@ -11,10 +11,8 @@ public interface UserAccountMapper {
     UserAccountMapper INSTANCE = Mappers.getMapper(UserAccountMapper.class);
 
     @Mapping(target = "personId", source = "person.personId")
-    @Mapping(target = "accountRoleId", source = "accountRole.accountRoleId")
     UserAccountDto toDto(UserAccount entity);
 
     @Mapping(target = "person", ignore = true)
-    @Mapping(target = "accountRole", ignore = true)
     UserAccount toEntity(UserAccountDto dto);
 }
