@@ -1,10 +1,7 @@
 package com.ois3.security.controller;
 
 import com.ois3.entity.UserAccount;
-import com.ois3.security.dto.LoginResponseDto;
-import com.ois3.security.dto.LoginUserDto;
-import com.ois3.security.dto.RegisterUserDto;
-import com.ois3.security.dto.VerifyUserDto;
+import com.ois3.security.dto.*;
 import com.ois3.security.service.AuthenticationService;
 import com.ois3.security.service.JwtService;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +31,14 @@ public class AuthenticationController {
     public ResponseEntity<LoginResponseDto> authenticate(@RequestBody LoginUserDto loginUserDto) {
         UserAccount authenticatedUser = authenticationService.authenticate(loginUserDto);
         String jwtToken = jwtService.generateToken(authenticatedUser);
-        LoginResponseDto loginResponse = new LoginResponseDto(jwtToken, jwtService.getExpirationTime());
+        UserResponseDto userResponseDto = new UserResponseDto(
+                authenticatedUser.getUserAccountId().longValue(),
+                authenticatedUser.getUsername(),
+                authenticatedUser.getEmail(),
+                authenticatedUser.getRoles(),
+                authenticatedUser.getPerson() != null
+        );
+        LoginResponseDto loginResponse = new LoginResponseDto(jwtToken, jwtService.getExpirationTime(), userResponseDto);
         return ResponseEntity.ok(loginResponse);
     }
 
