@@ -1,10 +1,12 @@
 package com.ois3.controller;
 
 import com.ois3.dto.PersonDto;
+import com.ois3.entity.Person;
 import com.ois3.service.PersonService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -50,7 +52,32 @@ public class PersonController {
     @DeleteMapping("{id}")
     public ResponseEntity<String> deletePerson(@PathVariable("id") Integer personId) {
         personService.deletePerson(personId);
-
         return ResponseEntity.ok("Person deleted successfully!");
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<PersonDto> getProfile(Authentication authentication) {
+        String username = authentication.getName();
+        PersonDto personDto = personService.getProfileByUsername(username);
+        if (personDto == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(personDto);
+    }
+
+    @PostMapping("/profile")
+    public ResponseEntity<PersonDto> createProfile(@RequestBody PersonDto personDto,
+                                                   Authentication authentication) {
+        String username = authentication.getName();
+        PersonDto savedProfile = personService.createProfile(personDto, username);
+        return new ResponseEntity<>(savedProfile, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/profile")
+    public ResponseEntity<PersonDto> updateProfile(@RequestBody PersonDto personDto,
+                                                   Authentication authentication) {
+        String username = authentication.getName();
+        PersonDto updatedProfile = personService.updateProfile(personDto, username);
+        return ResponseEntity.ok(updatedProfile);
     }
 }

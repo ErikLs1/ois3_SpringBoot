@@ -15,4 +15,10 @@ public interface PersonService {
     List<PersonDto> getAllPersons();
 
     void deletePerson(Integer id);
+
+    PersonDto getProfileByUsername(String username);
+
+    PersonDto createProfile(PersonDto personDto, String username);
+
+    PersonDto updateProfile(PersonDto personDto, String username);
 }
